@@ -474,7 +474,7 @@ def evaluate_career_fit(
 # Sidebar Navigation & Settings
 # -----------------------------------------------------------------------------
 with st.sidebar:
-    st.markdown("""
+    st.html("""
     <div class="acc-brand-header">
         <div class="acc-logo-box">ACC</div>
         <div>
@@ -482,7 +482,7 @@ with st.sidebar:
             <p class="acc-tagline">Building Job Ready Tech Talent</p>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """)
 
     nav_tab = st.radio(
         "Navigation",
@@ -536,12 +536,12 @@ with st.sidebar:
                 llm_service.set_api_keys(openai_key=openai_key)
 
     # Official Scam Alert Notice Badge
-    st.markdown("""
+    st.html("""
     <div class="badge-scam">
         <strong>🛡️ Official Scam Policy:</strong><br>
         ACC <u>never</u> charges college students (2027-2029) for internships. All college programs are <strong>100% FREE</strong>.
     </div>
-    """, unsafe_allow_html=True)
+    """)
 
     # Engine Status
     total_chunks = len(rag_engine.chunks)
@@ -556,7 +556,7 @@ if nav_tab == "💬 AI Career Assistant":
 
     # Initial Welcome Hero Card (shown when conversation is empty)
     if not st.session_state.chat_messages:
-        st.markdown("""
+        st.html("""
         <div class="acc-card" style="margin-top: 10px; margin-bottom: 20px; border: 1px solid rgba(56, 189, 248, 0.35); background: linear-gradient(135deg, rgba(16, 26, 54, 0.95), rgba(13, 22, 44, 0.95));">
             <div style="display: flex; gap: 16px; align-items: flex-start;">
                 <div style="width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #0ea5e9, #2563eb); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.3rem; flex-shrink: 0; box-shadow: 0 4px 14px rgba(14, 165, 233, 0.4);">
@@ -570,7 +570,7 @@ if nav_tab == "💬 AI Career Assistant":
                 </div>
             </div>
         </div>
-        """, unsafe_allow_html=True)
+        """)
 
     # Quick Starter Chips
     st.markdown("##### ⚡ Quick Questions:")
@@ -713,7 +713,8 @@ elif nav_tab == "🎓 Programs & Job Tracks":
 
     for prog in filtered_programs:
         with st.container():
-            st.markdown(f"""
+            skills_html = ''.join([f'<span class="skill-pill">{s}</span>' for s in prog.get('key_skills', [])])
+            st.html(f"""
             <div class="acc-card">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
                     <div>
@@ -725,19 +726,16 @@ elif nav_tab == "🎓 Programs & Job Tracks":
                         <span style="color: #38bdf8; font-size: 0.85rem; font-weight: 600;">🕒 {prog.get('duration')} | 📍 {prog.get('mode')}</span>
                     </div>
                 </div>
-                
                 <div style="margin: 12px 0; padding: 10px 14px; background: rgba(14, 165, 233, 0.08); border-left: 3px solid #0ea5e9; border-radius: 6px; font-size: 0.85rem; color: #e2e8f0;">
                     <strong>💰 Cost & Stipend:</strong> {prog.get('stipend')}
                 </div>
-                
                 <p style="color: #94a3b8; font-size: 0.85rem; line-height: 1.5; margin-bottom: 12px;">{prog.get('description')}</p>
-                
                 <div style="margin-bottom: 12px;">
                     <strong style="font-size: 0.8rem; color: #cbd5e1;">🛠️ Key Skills:</strong><br>
-                    {''.join([f'<span class="skill-pill">{s}</span>' for s in prog.get('key_skills', [])])}
+                    {skills_html}
                 </div>
             </div>
-            """, unsafe_allow_html=True)
+            """)
 
             # Action Buttons
             b_col1, b_col2, _ = st.columns([1.5, 1.5, 4])
@@ -805,7 +803,7 @@ elif nav_tab == "🎯 Career Match Calculator":
         st.progress(result['match_score'] / 100.0)
 
         # Overview Card
-        st.markdown(f"""
+        st.html(f"""
         <div class="acc-card">
             <h4 style="color: #38bdf8; margin: 0 0 8px 0;">📋 Track Summary</h4>
             <p style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.6;">{result['summary']}</p>
@@ -813,7 +811,7 @@ elif nav_tab == "🎯 Career Match Calculator":
                 <span class="badge-free"><strong>Status:</strong> {result['cost_status']}</span>
             </div>
         </div>
-        """, unsafe_allow_html=True)
+        """)
 
         # Skill Gap Analysis
         s_col1, s_col2 = st.columns(2)
@@ -866,13 +864,13 @@ elif nav_tab == "📚 Knowledge & Document Hub":
         w_cols = st.columns(2)
         for idx, page in enumerate(WEBSITE_PAGES):
             with w_cols[idx % 2]:
-                st.markdown(f"""
+                st.html(f"""
                 <div class="acc-card" style="padding: 12px;">
                     <strong style="color: #38bdf8;">🌐 {page['name']}</strong><br>
                     <span style="font-size: 0.75rem; color: #94a3b8;">{page['topics']}</span><br>
                     <a href="{page['url']}" target="_blank" style="font-size: 0.75rem; color: #0ea5e9;">{page['url']}</a>
                 </div>
-                """, unsafe_allow_html=True)
+                """)
 
     # Sub-tab 2: Interactive PDF Page Reader
     with doc_tab2:
@@ -952,7 +950,7 @@ elif nav_tab == "🏢 Company & Scam Policy":
     company_data = rag_engine.get_company_profile()
 
     # Company Overview
-    st.markdown(f"""
+    st.html(f"""
     <div class="acc-card">
         <h3 style="color: #38bdf8; margin: 0 0 6px 0;">{company_data.get('name', 'Analytics Career Connect')}</h3>
         <p style="color: #0ea5e9; font-weight: 600; font-size: 0.9rem; margin-bottom: 10px;">{company_data.get('tagline', 'Building Job Ready Tech Talent')}</p>
@@ -961,36 +959,36 @@ elif nav_tab == "🏢 Company & Scam Policy":
             📍 <strong>Headquarters:</strong> {company_data.get('headquarters', 'Pune, Maharashtra, India')}
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """)
 
     # Leadership
     st.markdown("#### 👥 Leadership Team")
     l_col1, l_col2 = st.columns(2)
     with l_col1:
-        st.markdown("""
+        st.html("""
         <div class="acc-card">
             <h4 style="color: #ffffff; margin: 0;">Mr. Wasim Patwari</h4>
             <p style="color: #38bdf8; font-size: 0.8rem; margin: 0 0 8px 0;">Founder & CEO</p>
             <p style="color: #94a3b8; font-size: 0.82rem; line-height: 1.4;">Dedicated to making high-impact practical tech education affordable for learners across Tier 1, 2, 3, and 4 cities in India.</p>
         </div>
-        """, unsafe_allow_html=True)
+        """)
     with l_col2:
-        st.markdown("""
+        st.html("""
         <div class="acc-card">
             <h4 style="color: #ffffff; margin: 0;">Mrs. Sadaf Khan (Patwari)</h4>
             <p style="color: #38bdf8; font-size: 0.8rem; margin: 0 0 8px 0;">Co-Founder</p>
             <p style="color: #94a3b8; font-size: 0.82rem; line-height: 1.4;">Driving student empowerment, operations, community building, and recruitment partner alliances across India.</p>
         </div>
-        """, unsafe_allow_html=True)
+        """)
 
     # Scam Alert Notice Banner
     st.markdown("#### ⚠️ Official Scam Alert & Verification Policy")
-    st.markdown(f"""
+    st.html(f"""
     <div class="badge-scam">
         <h4 style="color: #fbbf24; margin: 0 0 6px 0;">🛡️ Zero-Fee Policy for College Students</h4>
         {company_data.get('official_scam_alert', 'ACC never charges fees from college students.')}
     </div>
-    """, unsafe_allow_html=True)
+    """)
 
     # Frequently Asked Questions (Accordion)
     st.markdown("#### ❓ Frequently Asked Questions")
