@@ -3,7 +3,8 @@ Documents & Upload Explorer API Router.
 """
 
 import os
-import fitz # PyMuPDF
+import io
+import pypdf
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from typing import List, Dict, Any
 from app.knowledge.rag_engine import rag_engine
@@ -112,10 +113,10 @@ async def get_document_pages(filename: str):
         raise HTTPException(status_code=404, detail=f"Document '{filename}' not found.")
 
     try:
-        doc = fitz.open(filepath)
+        reader = pypdf.PdfReader(filepath)
         pages_data = []
-        for page_idx, page in enumerate(doc):
-            text = page.get_text()
+        for page_idx, page in enumerate(reader.pages):
+            text = page.extract_text() or ""
             pages_data.append({
                 "page_number": page_idx + 1,
                 "text": text.strip(),
@@ -126,7 +127,7 @@ async def get_document_pages(filename: str):
 
         return {
             "filename": os.path.basename(filepath),
-            "total_pages": len(doc),
+            "total_pages": len(reader.pages),
             "file_size_kb": file_size_kb,
             "pages": pages_data
         }
@@ -144,9 +145,10 @@ async def upload_document(file: UploadFile = File(...)):
 
     if file.filename.lower().endswith(".pdf"):
         try:
-            doc = fitz.open(stream=content_bytes, filetype="pdf")
-            for page in doc:
-                extracted_text += page.get_text() + "\n"
+            reader = pypdf.PdfReader(io.BytesIO(content_bytes))
+            for page in reader.pages:
+                text = page.extract_text() or ""
+                extracted_text += text + "\n"
         except Exception as e:
             raise HTTPException(status_code=400, detail=f"Failed to parse PDF: {e}")
     elif file.filename.lower().endswith((".txt", ".md")):

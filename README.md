@@ -33,7 +33,7 @@ ACC helps students and professionals transition into analytics and business role
 
 - Python 3.11+
 - FastAPI
-- PyMuPDF (PDF indexing)
+- pypdf (PDF indexing & processing)
 - RAG-based custom retrieval engine
 - HTML/JS frontend with Tailwind CSS
 - pytest for automated validation

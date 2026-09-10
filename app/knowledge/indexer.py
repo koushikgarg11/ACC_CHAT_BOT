@@ -7,7 +7,7 @@ structured program catalogs, and company metadata.
 import os
 import re
 import json
-import fitz # PyMuPDF
+import pypdf
 
 WORKSPACE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data"))
@@ -73,11 +73,11 @@ def build_knowledge_base():
             print(f"Warning: File {filepath} not found.")
             continue
             
-        doc = fitz.open(filepath)
+        reader = pypdf.PdfReader(filepath)
         doc_full_text = ""
         page_texts = []
-        for page_num, page in enumerate(doc):
-            p_text = clean_text(page.get_text())
+        for page_num, page in enumerate(reader.pages):
+            p_text = clean_text(page.extract_text() or "")
             page_texts.append((page_num + 1, p_text))
             doc_full_text += f"\n\n[Page {page_num + 1}]\n" + p_text
             
@@ -98,7 +98,7 @@ def build_knowledge_base():
                     "content": schunk,
                     "url": None
                 })
-        print(f"Indexed PDF: {filename} ({len(doc)} pages)")
+        print(f"Indexed PDF: {filename} ({len(reader.pages)} pages)")
 
     # 2. Process Scraped Website Pages
     web_file = os.path.join(WORKSPACE_DIR, "website_data.json")
