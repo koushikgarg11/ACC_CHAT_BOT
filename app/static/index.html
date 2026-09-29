@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics Career Connect | AI Career & Program Assistant</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              200: '#bae0fd',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              navy: '#0b1329',
+              darkcard: '#131e3a',
+              accent: '#38bdf8'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Marked for Markdown Parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="icon" href="https://analyticscareerconnect.com/wp-content/uploads/2025/06/cropped-Career_Connect__1_-removebg-preview-32x32.png">
+</head>
+<body class="bg-[#090e1a] text-slate-100 font-sans antialiased min-h-screen flex overflow-hidden">
+
+  <!-- Left Sidebar Navigation -->
+  <aside class="w-72 bg-[#0d162c]/90 backdrop-blur-xl border-r border-slate-800/80 flex flex-col justify-between hidden md:flex z-30">
+    <div class="p-5">
+      <!-- Brand Header -->
+      <div class="flex items-center gap-3 pb-6 border-b border-slate-800/80">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 flex items-center justify-center shadow-lg shadow-sky-500/20 text-white font-bold text-lg">
+          ACC
+        </div>
+        <div>
+          <h1 class="font-bold text-white tracking-wide text-sm leading-tight">Analytics Career Connect</h1>
+          <p class="text-xs text-sky-400 font-medium">Building Job Ready Tech Talent</p>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="mt-6 space-y-1.5" id="nav-tabs">
+        <button onclick="switchTab('chat')" id="tab-btn-chat" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-medium transition-all duration-200 bg-sky-600/20 text-sky-400 border border-sky-500/30">
+          <i data-lucide="message-square" class="w-4 h-4"></i>
+          <span>AI Career Assistant</span>
+        </button>
+
+        <button onclick="switchTab('programs')" id="tab-btn-programs" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-medium transition-all duration-200 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
+          <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+          <span>Programs & JDs</span>
+        </button>
+
+        <button onclick="switchTab('career-match')" id="tab-btn-career-match" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-medium transition-all duration-200 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
+          <i data-lucide="sparkles" class="w-4 h-4"></i>
+          <span>Career Match Calculator</span>
+        </button>
+
+        <button onclick="switchTab('knowledge')" id="tab-btn-knowledge" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-medium transition-all duration-200 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
+          <i data-lucide="book-open" class="w-4 h-4"></i>
+          <span>Knowledge & Docs Hub</span>
+        </button>
+      </nav>
+
+      <!-- Scam Alert Notice Badge -->
+      <div class="mt-6 p-3.5 rounded-xl bg-amber-950/40 border border-amber-500/30 text-amber-300 text-xs leading-relaxed shadow-sm">
+        <div class="flex items-center gap-1.5 font-semibold text-amber-400 mb-1">
+          <i data-lucide="shield-alert" class="w-4 h-4"></i>
+          <span>Official Scam Policy</span>
+        </div>
+        <p class="text-amber-200/80">ACC never charges college students for internships. Student programs are 100% free.</p>
+      </div>
+    </div>
+
+    <!-- User & Settings Footer -->
+    <div class="p-4 border-t border-slate-800/80 bg-[#0a1020]">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></div>
+          <span class="text-xs text-slate-400 font-medium" id="engine-status-label">ACC Smart Engine Live</span>
+        </div>
+        <button onclick="openSettingsModal()" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition" title="LLM & Engine Settings">
+          <i data-lucide="settings" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 flex flex-col h-screen overflow-hidden relative">
+
+    <!-- Mobile Top Navigation Bar -->
+    <header class="md:hidden flex items-center justify-between p-4 bg-[#0d162c] border-b border-slate-800 z-20">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-sky-500 flex items-center justify-center font-bold text-white text-sm">ACC</div>
+        <span class="font-bold text-sm text-white">Analytics Career Connect</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="openSettingsModal()" class="p-2 rounded-lg text-slate-300 hover:bg-slate-800">
+          <i data-lucide="settings" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Mobile Tabs -->
+    <div class="md:hidden flex border-b border-slate-800 bg-[#0b1329] text-xs">
+      <button onclick="switchTab('chat')" id="m-tab-chat" class="flex-1 py-2.5 text-center font-medium text-sky-400 border-b-2 border-sky-500">Assistant</button>
+      <button onclick="switchTab('programs')" id="m-tab-programs" class="flex-1 py-2.5 text-center font-medium text-slate-400">Programs</button>
+      <button onclick="switchTab('career-match')" id="m-tab-career-match" class="flex-1 py-2.5 text-center font-medium text-slate-400">Match AI</button>
+      <button onclick="switchTab('knowledge')" id="m-tab-knowledge" class="flex-1 py-2.5 text-center font-medium text-slate-400">Docs</button>
+    </div>
+
+    <!-- VIEW 1: AI CHAT ASSISTANT -->
+    <section id="view-chat" class="flex-1 flex flex-col h-full overflow-hidden">
+      <!-- Chat Header -->
+      <div class="px-6 py-3.5 border-b border-slate-800/80 bg-[#0b1329]/70 backdrop-blur flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="p-2 rounded-lg bg-sky-500/10 text-sky-400 border border-sky-500/20">
+            <i data-lucide="bot" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h2 class="text-sm font-semibold text-white">ACC Career & Program Advisor</h2>
+            <p class="text-xs text-slate-400">Trained on official PDFs & analyticscareerconnect.com</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <!-- Document Scope Filter -->
+          <div class="hidden sm:flex items-center gap-1.5 bg-slate-800/80 border border-slate-700/70 rounded-lg px-2 py-1">
+            <i data-lucide="filter" class="w-3.5 h-3.5 text-sky-400"></i>
+            <span class="text-[11px] text-slate-400 font-medium">Scope:</span>
+            <select id="chat-doc-filter" onchange="onChatDocFilterChange(this.value)" class="bg-transparent text-[11px] text-sky-300 font-medium focus:outline-none cursor-pointer">
+              <option value="all">🌐 All Documents & Website</option>
+              <option value="JD Paid Placement Program With Internship  (1).pdf">📄 Paid Placement (2026 & Below)</option>
+              <option value="PDF Data &amp; Business Analyst Intern _ Remote] _ 2027_2028_2029 Batch .pdf">📄 College Internship (2027-2029)</option>
+              <option value="Under DataYug Project Data Analyst JD ( 2026 and Below ) JD (5) (1) (1).pdf">📄 DataYug Project (2026)</option>
+              <option value="Marketing Intern (Remote _ Full-Time _ Part-Time).pdf">📄 Marketing Internship</option>
+            </select>
+          </div>
+          <!-- Voice Toggle -->
+          <button id="tts-toggle-btn" onclick="toggleTTS()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 transition" title="Toggle Auto Voice Readout">
+            <i data-lucide="volume-2" id="tts-icon" class="w-3.5 h-3.5"></i>
+            <span id="tts-text">Voice On</span>
+          </button>
+          <!-- Clear Chat -->
+          <button onclick="clearChatHistory()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 transition" title="Clear Conversation">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">Clear</span>
+          </button>
+          <!-- Export Chat -->
+          <button onclick="exportChat()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 transition" title="Export Conversation">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">Export</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Chat Messages Scroll Container -->
+      <div id="chat-messages" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 scroll-smooth">
+        <!-- Initial Welcome Message Card -->
+        <div class="max-w-3xl mx-auto bg-[#101a36]/80 border border-slate-800/90 rounded-2xl p-5 md:p-6 shadow-xl backdrop-blur">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-400 to-blue-600 flex items-center justify-center text-white shrink-0 shadow-md shadow-sky-500/20">
+              <i data-lucide="sparkles" class="w-5 h-5"></i>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-base font-bold text-white">Welcome to Analytics Career Connect!</h3>
+              <p class="text-xs md:text-sm text-slate-300 mt-1 leading-relaxed">
+                I can answer all your questions regarding our Data Analytics Placement Programs, 100% Free College Internships (2027-2029), Marketing tracks, DataYug project options, tools (Power BI, SQL, Python, Excel), and official application forms.
+              </p>
+              
+              <!-- Quick Starter Chips -->
+              <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <button onclick="sendQuickPrompt('Explain the Paid Placement Program for 2026 & below batches in detail.')" class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-800/60 hover:bg-sky-950/40 border border-slate-700/60 hover:border-sky-500/40 text-left text-xs text-slate-200 transition group">
+                  <i data-lucide="briefcase" class="w-4 h-4 text-sky-400 shrink-0 group-hover:scale-110 transition"></i>
+                  <span>Paid Placement Program (2026 Batch)</span>
+                </button>
+                <button onclick="sendQuickPrompt('What are the eligibility and stipend details for 2027, 2028, 2029 batch internships? Is it free?')" class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-800/60 hover:bg-emerald-950/40 border border-slate-700/60 hover:border-emerald-500/40 text-left text-xs text-slate-200 transition group">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 shrink-0 group-hover:scale-110 transition"></i>
+                  <span>2027-2029 Free Student Internship</span>
+                </button>
+                <button onclick="sendQuickPrompt('Explain the 3 options under DataYug Project for Data Analysts.')" class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-800/60 hover:bg-purple-950/40 border border-slate-700/60 hover:border-purple-500/40 text-left text-xs text-slate-200 transition group">
+                  <i data-lucide="layers" class="w-4 h-4 text-purple-400 shrink-0 group-hover:scale-110 transition"></i>
+                  <span>DataYug Project (3 Options)</span>
+                </button>
+                <button onclick="sendQuickPrompt('Who founded Analytics Career Connect and what is the company background?')" class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-800/60 hover:bg-amber-950/40 border border-slate-700/60 hover:border-amber-500/40 text-left text-xs text-slate-200 transition group">
+                  <i data-lucide="users" class="w-4 h-4 text-amber-400 shrink-0 group-hover:scale-110 transition"></i>
+                  <span>Founders & Company Background</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Suggested Followup Pills -->
+      <div id="followup-container" class="px-4 md:px-6 py-2 bg-[#090e1a] flex gap-2 overflow-x-auto no-scrollbar border-t border-slate-800/60 hidden">
+        <!-- Injected dynamically -->
+      </div>
+
+      <!-- Chat Input Bar -->
+      <div class="p-4 md:p-5 bg-[#0d162c]/90 border-t border-slate-800/80 backdrop-blur">
+        <form id="chat-form" onsubmit="handleChatSubmit(event)" class="max-w-4xl mx-auto flex items-center gap-2 bg-[#131e3a] border border-slate-700/70 focus-within:border-sky-500 rounded-2xl p-1.5 shadow-lg shadow-black/30 transition">
+          <!-- Voice Input Button -->
+          <button type="button" id="voice-input-btn" onclick="startVoiceInput()" class="p-2.5 rounded-xl text-slate-400 hover:text-sky-400 hover:bg-slate-800/80 transition" title="Speak your question">
+            <i data-lucide="mic" class="w-5 h-5"></i>
+          </button>
+          
+          <!-- Input Textarea -->
+          <input type="text" id="chat-input" placeholder="Ask anything about ACC programs, syllabus, fees, or batch eligibility..." autocomplete="off" class="flex-1 bg-transparent text-sm text-white placeholder-slate-400 px-2 py-2 focus:outline-none">
+
+          <!-- Submit Button -->
+          <button type="submit" id="send-btn" class="p-2.5 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 text-white font-medium hover:opacity-90 disabled:opacity-50 transition shadow-md shadow-sky-500/20">
+            <i data-lucide="send" class="w-4 h-4"></i>
+          </button>
+        </form>
+        <p class="text-center text-[11px] text-slate-500 mt-2">
+          Analytics Career Connect AI Chatbot • Always verify application forms through official channels.
+        </p>
+      </div>
+    </section>
+
+    <!-- VIEW 2: PROGRAMS & JOB BOARD -->
+    <section id="view-programs" class="flex-1 overflow-y-auto p-4 md:p-8 hidden">
+      <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+          <div>
+            <h2 class="text-2xl font-bold text-white tracking-tight">Programs & Opportunities Catalog</h2>
+            <p class="text-sm text-slate-400 mt-1">Explore all official placement accelerators, student internships, and executive tracks.</p>
+          </div>
+          <!-- Filter Buttons -->
+          <div class="flex flex-wrap gap-2" id="program-filters">
+            <button onclick="filterPrograms('all')" class="prog-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-medium bg-sky-600 text-white transition active" data-filter="all">All</button>
+            <button onclick="filterPrograms('2026')" class="prog-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition" data-filter="2026">2026 & Below (Graduates)</button>
+            <button onclick="filterPrograms('2027')" class="prog-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition" data-filter="2027">2027-2029 (College Students)</button>
+            <button onclick="filterPrograms('marketing')" class="prog-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition" data-filter="marketing">Marketing & Growth</button>
+          </div>
+        </div>
+
+        <!-- Programs Grid -->
+        <div id="programs-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+          <!-- Injected dynamically via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: CAREER MATCH & ELIGIBILITY CALCULATOR -->
+    <section id="view-career-match" class="flex-1 overflow-y-auto p-4 md:p-8 hidden">
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-8">
+          <span class="px-3 py-1 rounded-full text-xs font-medium bg-sky-500/10 text-sky-400 border border-sky-500/20">AI Advisor Engine</span>
+          <h2 class="text-2xl md:text-3xl font-bold text-white mt-3">Personalized Career Match Calculator</h2>
+          <p class="text-sm text-slate-400 mt-2">Enter your graduation year and current skill set to calculate your exact fit, skill gaps, and custom ACC roadmap.</p>
+        </div>
+
+        <!-- Questionnaire Card -->
+        <div class="bg-[#101a36] border border-slate-800 rounded-2xl p-6 md:p-8 shadow-xl">
+          <form onsubmit="handleCareerMatchSubmit(event)" class="space-y-6">
+            <!-- Graduation Year -->
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">1. Your Graduation Batch Year</label>
+              <select id="cm-year" class="w-full bg-[#0b1329] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-sky-500">
+                <option value="2029">2029 Batch (1st / 2nd Year College)</option>
+                <option value="2028">2028 Batch (2nd / 3rd Year College)</option>
+                <option value="2027">2027 Batch (3rd / 4th Year College)</option>
+                <option value="2026" selected>2026 Batch (Final Year / Pre-Graduate)</option>
+                <option value="2025">2025 Batch (Graduate)</option>
+                <option value="2024">2024 & Earlier (Graduate / Career Switcher)</option>
+              </select>
+            </div>
+
+            <!-- Current Skills (Checkboxes) -->
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">2. Skills You Currently Know (Select all that apply)</label>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="skills-checkbox-grid">
+                <label class="flex items-center gap-2.5 p-3 rounded-xl bg-[#0b1329] border border-slate-700/60 cursor-pointer hover:border-slate-500 transition">
+                  <input type="checkbox" name="skills" value="SQL" class="rounded bg-slate-800 text-sky-500 focus:ring-0">
+                  <span class="text-xs text-slate-200 font-medium">SQL & Queries</span>
+                </label>
+                <label class="flex items-center gap-2.5 p-3 rounded-xl bg-[#0b1329] border border-slate-700/60 cursor-pointer hover:border-slate-500 transition">
+                  <input type="checkbox" name="skills" value="Power BI" class="rounded bg-slate-800 text-sky-500 focus:ring-0">
+                  <span class="text-xs text-slate-200 font-medium">Power BI / DAX</span>
+                </label>
+                <label class="flex items-center gap-2.5 p-3 rounded-xl bg-[#0b1329] border border-slate-700/60 cursor-pointer hover:border-slate-500 transition">
+                  <input type="checkbox" name="skills" value="Python" class="rounded bg-slate-800 text-sky-500 focus:ring-0">
+                  <span class="text-xs text-slate-200 font-medium">Python (Pandas)</span>
+                </label>
+                <label class="flex items-center gap-2.5 p-3 rounded-xl bg-[#0b1329] border border-slate-700/60 cursor-pointer hover:border-slate-500 transition">
+                  <input type="checkbox" name="skills" value="Advanced Excel" class="rounded bg-slate-800 text-sky-500 focus:ring-0">
+                  <span class="text-xs text-slate-200 font-medium">Advanced Excel</span>
+                </label>
+                <label class="flex items-center gap-2.5 p-3 rounded-xl bg-[#0b1329] border border-slate-700/60 cursor-pointer hover:border-slate-500 transition">
+                  <input type="checkbox" name="skills" value="Tableau" class="rounded bg-slate-800 text-sky-500 focus:ring-0">
+                  <span class="text-xs text-slate-200 font-medium">Tableau</span>
+                </label>
+                <label class="flex items-center gap-2.5 p-3 rounded-xl bg-[#0b1329] border border-slate-700/60 cursor-pointer hover:border-slate-500 transition">
+                  <input type="checkbox" name="skills" value="Marketing / Content" class="rounded bg-slate-800 text-sky-500 focus:ring-0">
+                  <span class="text-xs text-slate-200 font-medium">Marketing & Content</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Knowledge Level & Target Role Row -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">3. Overall Practical Level</label>
+                <select id="cm-level" class="w-full bg-[#0b1329] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-sky-500">
+                  <option value="Beginner (0-30%)">Beginner (0 - 30% hands-on)</option>
+                  <option value="Intermediate (30-70%)" selected>Intermediate (30 - 70% hands-on)</option>
+                  <option value="Advanced (70-100%)">Advanced (80%+ hands-on knowledge)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">4. Desired Career Goal</label>
+                <select id="cm-role" class="w-full bg-[#0b1329] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-sky-500">
+                  <option value="Data Analyst" selected>Data Analyst / BI Developer</option>
+                  <option value="Business Analyst">Business Analyst</option>
+                  <option value="Marketing / Growth">Marketing & Growth</option>
+                  <option value="Founder's Office">Founder's Office Executive</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" id="cm-submit-btn" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 text-white font-semibold text-sm shadow-lg shadow-sky-500/20 hover:opacity-95 transition flex items-center justify-center gap-2">
+              <i data-lucide="calculator" class="w-4 h-4"></i>
+              <span>Evaluate My Profile & Recommend Track</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Career Match Results Card (Hidden by default) -->
+        <div id="cm-result-card" class="mt-8 bg-[#101a36] border border-sky-500/30 rounded-2xl p-6 md:p-8 shadow-2xl hidden">
+          <!-- Injected dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4: KNOWLEDGE BASE & DOCUMENT VIEWER -->
+    <section id="view-knowledge" class="flex-1 overflow-y-auto p-4 md:p-8 hidden">
+      <div class="max-w-6xl mx-auto space-y-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+          <div>
+            <h2 class="text-2xl font-bold text-white">Indexed Documents & Knowledge Hub</h2>
+            <p class="text-sm text-slate-400 mt-1">Directly view and inspect the official JDs, website articles, and upload your resume for analysis.</p>
+          </div>
+        </div>
+
+        <!-- Upload Resume Card -->
+        <div class="bg-gradient-to-r from-sky-950/30 to-blue-950/30 border border-sky-500/30 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-sky-500/20 text-sky-400 border border-sky-500/30 flex items-center justify-center shrink-0">
+              <i data-lucide="file-up" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-white">Upload Your Resume or Custom Document</h3>
+              <p class="text-xs text-slate-300 mt-0.5">Upload a PDF or TXT to enable custom Q&A (e.g., "Review my resume against ACC Paid Placement JD").</p>
+            </div>
+          </div>
+          <div>
+            <input type="file" id="doc-upload-input" accept=".pdf,.txt,.md" class="hidden" onchange="handleFileUpload(event)">
+            <button onclick="document.getElementById('doc-upload-input').click()" class="px-5 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-medium text-xs shadow-md shadow-sky-600/30 transition flex items-center gap-2">
+              <i data-lucide="upload-cloud" class="w-4 h-4"></i>
+              <span>Select File</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- PDF Documents Section Header & Selector -->
+        <div>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800/80 mb-4">
+            <div class="flex items-center gap-2">
+              <i data-lucide="file-text" class="w-5 h-5 text-sky-400"></i>
+              <h3 class="text-base font-bold text-white">Official Company PDF Documents</h3>
+              <span id="doc-count-badge" class="px-2 py-0.5 rounded-full text-xs font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/20">4 Indexed</span>
+            </div>
+            
+            <!-- Document Option Selector (Dropdown & Quick Tabs) -->
+            <div class="flex items-center gap-2">
+              <label for="pdf-doc-selector" class="text-xs text-slate-400 font-medium shrink-0">Select Option:</label>
+              <select id="pdf-doc-selector" onchange="onPdfSelectorChange(this.value)" class="bg-[#101a36] border border-sky-500/40 text-xs text-sky-300 font-semibold rounded-xl px-3 py-2 focus:outline-none focus:border-sky-400 cursor-pointer shadow-md">
+                <option value="all">🔘 All PDF Documents (Grid Overview)</option>
+                <option value="JD Paid Placement Program With Internship  (1).pdf">📄 Paid Placement Program (2026 & Below)</option>
+                <option value="PDF Data &amp; Business Analyst Intern _ Remote] _ 2027_2028_2029 Batch .pdf">📄 Data & Business Analyst Intern (2027-2029 Batches)</option>
+                <option value="Under DataYug Project Data Analyst JD ( 2026 and Below ) JD (5) (1) (1).pdf">📄 DataYug Project - Data Analyst JD (2026 & Below)</option>
+                <option value="Marketing Intern (Remote _ Full-Time _ Part-Time).pdf">📄 Marketing Internship Program</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Quick Option Filter Buttons -->
+          <div class="flex flex-wrap gap-2 mb-5" id="pdf-option-filter-btns">
+            <button onclick="onPdfSelectorChange('all')" class="pdf-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-sky-600 text-white transition active" data-doc="all">All Documents</button>
+            <button onclick="onPdfSelectorChange('JD Paid Placement Program With Internship  (1).pdf')" class="pdf-filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition" data-doc="JD Paid Placement Program With Internship  (1).pdf">Placement 2026</button>
+            <button onclick="onPdfSelectorChange('PDF Data &amp; Business Analyst Intern _ Remote] _ 2027_2028_2029 Batch .pdf')" class="pdf-filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition" data-doc="PDF Data &amp; Business Analyst Intern _ Remote] _ 2027_2028_2029 Batch .pdf">College 2027-2029</button>
+            <button onclick="onPdfSelectorChange('Under DataYug Project Data Analyst JD ( 2026 and Below ) JD (5) (1) (1).pdf')" class="pdf-filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition" data-doc="Under DataYug Project Data Analyst JD ( 2026 and Below ) JD (5) (1) (1).pdf">DataYug Project</button>
+            <button onclick="onPdfSelectorChange('Marketing Intern (Remote _ Full-Time _ Part-Time).pdf')" class="pdf-filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition" data-doc="Marketing Intern (Remote _ Full-Time _ Part-Time).pdf">Marketing Intern</button>
+          </div>
+
+          <!-- CONTAINER 1: All PDFs Grid View -->
+          <div id="all-pdfs-container">
+            <div id="pdf-docs-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Injected dynamically -->
+            </div>
+          </div>
+
+          <!-- CONTAINER 2: Dedicated Single PDF View (Shown when a single option is selected) -->
+          <div id="single-pdf-container" class="hidden space-y-5">
+            <!-- Single PDF Banner -->
+            <div class="bg-[#101a36] border border-sky-500/40 rounded-2xl p-5 md:p-6 shadow-xl">
+              <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span id="single-doc-category" class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20">Placement Track</span>
+                    <span id="single-doc-batch" class="px-2.5 py-0.5 rounded-md text-[11px] font-medium bg-slate-800 text-slate-300">2026 & Below</span>
+                    <span id="single-doc-pages" class="px-2.5 py-0.5 rounded-md text-[11px] font-medium bg-slate-800 text-slate-400">10 Pages</span>
+                    <span id="single-doc-size" class="px-2.5 py-0.5 rounded-md text-[11px] font-mono bg-slate-900 text-slate-400">484 KB</span>
+                  </div>
+                  <h3 id="single-doc-title" class="text-xl font-bold text-white">Paid Placement Program With Internship</h3>
+                  <p id="single-doc-desc" class="text-xs text-slate-300 mt-1.5 leading-relaxed">Detailed document description...</p>
+                  <p class="text-[11px] text-slate-400 mt-2 font-mono" id="single-doc-filename">File: JD Paid Placement Program With Internship (1).pdf</p>
+                </div>
+                
+                <div class="flex flex-wrap items-center gap-2 shrink-0">
+                  <button onclick="onPdfSelectorChange('all')" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition flex items-center gap-1.5">
+                    <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+                    <span>All PDFs</span>
+                  </button>
+                  <a id="single-doc-open-link" href="#" target="_blank" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-sky-950/60 border border-slate-700 text-sky-300 hover:text-white text-xs font-medium transition flex items-center gap-1.5">
+                    <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                    <span>Open Raw PDF</span>
+                  </a>
+                  <button onclick="askAIAboutCurrentSingleDoc()" class="px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold shadow-md shadow-sky-600/30 transition flex items-center gap-1.5">
+                    <i data-lucide="bot" class="w-3.5 h-3.5"></i>
+                    <span>Chat With This PDF</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Quick AI Action Starter Pills for Single PDF -->
+              <div class="mt-4 pt-4 border-t border-slate-800/80 flex flex-wrap items-center gap-2">
+                <span class="text-xs text-slate-400 font-medium flex items-center gap-1">
+                  <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i> AI Prompts for This PDF:
+                </span>
+                <button onclick="askAIAboutCurrentSingleDoc('Summarize the key points, role responsibilities, and eligibility from this document.')" class="px-3 py-1 rounded-lg bg-[#0b1329] hover:bg-sky-950/60 border border-slate-700/70 hover:border-sky-500/40 text-xs text-slate-300 hover:text-sky-300 transition">
+                  📄 Summarize Key Points
+                </button>
+                <button onclick="askAIAboutCurrentSingleDoc('What are the tools, technologies, and syllabus covered in this PDF?')" class="px-3 py-1 rounded-lg bg-[#0b1329] hover:bg-sky-950/60 border border-slate-700/70 hover:border-sky-500/40 text-xs text-slate-300 hover:text-sky-300 transition">
+                  🛠️ Tools & Curriculum
+                </button>
+                <button onclick="askAIAboutCurrentSingleDoc('What are the fee details, stipend, and scam prevention guidelines in this document?')" class="px-3 py-1 rounded-lg bg-[#0b1329] hover:bg-sky-950/60 border border-slate-700/70 hover:border-sky-500/40 text-xs text-slate-300 hover:text-sky-300 transition">
+                  💰 Fee & Stipend Policy
+                </button>
+                <button onclick="askAIAboutCurrentSingleDoc('What is the complete application procedure and official link for this role?')" class="px-3 py-1 rounded-lg bg-[#0b1329] hover:bg-sky-950/60 border border-slate-700/70 hover:border-sky-500/40 text-xs text-slate-300 hover:text-sky-300 transition">
+                  🔗 How to Apply
+                </button>
+              </div>
+            </div>
+
+            <!-- Single PDF Inspection Tabs -->
+            <div class="bg-[#101a36] border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+              <!-- Tab Header -->
+              <div class="flex border-b border-slate-800 bg-[#0b1329]">
+                <button id="sdoc-tab-btn-reader" onclick="switchSingleDocTab('reader')" class="px-5 py-3 text-xs font-semibold text-sky-400 border-b-2 border-sky-500 flex items-center gap-2">
+                  <i data-lucide="book-open" class="w-4 h-4"></i>
+                  <span>Page-by-Page Content Reader</span>
+                </button>
+                <button id="sdoc-tab-btn-preview" onclick="switchSingleDocTab('preview')" class="px-5 py-3 text-xs font-semibold text-slate-400 hover:text-slate-200 flex items-center gap-2">
+                  <i data-lucide="eye" class="w-4 h-4"></i>
+                  <span>Live PDF Document Preview</span>
+                </button>
+              </div>
+
+              <!-- Tab 1 Content: Page-by-Page Text Reader -->
+              <div id="sdoc-tab-reader" class="p-5 md:p-6 space-y-4">
+                <!-- Page Navigation Bar -->
+                <div class="flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl bg-[#0b1329] border border-slate-800">
+                  <div class="flex items-center gap-2">
+                    <button onclick="prevDocPage()" id="sdoc-prev-btn" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs disabled:opacity-40 disabled:cursor-not-allowed transition" title="Previous Page">
+                      <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                    </button>
+                    <span class="text-xs text-slate-300 font-medium">Page</span>
+                    <select id="sdoc-page-select" onchange="goToDocPage(parseInt(this.value))" class="bg-[#101a36] border border-slate-700 text-xs text-white rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-sky-500">
+                      <!-- Page numbers dynamically injected -->
+                    </select>
+                    <span class="text-xs text-slate-400" id="sdoc-total-pages-label">of 10</span>
+                    <button onclick="nextDocPage()" id="sdoc-next-btn" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs disabled:opacity-40 disabled:cursor-not-allowed transition" title="Next Page">
+                      <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </button>
+                  </div>
+
+                  <div class="flex items-center gap-2 text-xs text-slate-400">
+                    <span id="sdoc-char-count-label">0 Characters</span>
+                    <button onclick="copyCurrentPageText()" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition flex items-center gap-1" title="Copy text of this page">
+                      <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                      <span>Copy Page Text</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Page Content Viewer Box -->
+                <div class="p-5 rounded-xl bg-[#0b1329] border border-slate-800 min-h-[300px] max-h-[500px] overflow-y-auto font-sans text-xs md:text-sm text-slate-200 leading-relaxed whitespace-pre-wrap selection:bg-sky-500 selection:text-white" id="sdoc-page-content">
+                  Loading page text...
+                </div>
+              </div>
+
+              <!-- Tab 2 Content: Live PDF Viewer (Iframe) -->
+              <div id="sdoc-tab-preview" class="p-5 hidden">
+                <div class="rounded-xl overflow-hidden border border-slate-800 bg-[#0b1329] h-[600px]">
+                  <iframe id="sdoc-iframe" src="about:blank" class="w-full h-full border-0"></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Website Pages List -->
+        <div>
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-2">
+            <i data-lucide="globe" class="w-4 h-4 text-emerald-400"></i>
+            <span>Live Website Pages Indexed (analyticscareerconnect.com)</span>
+          </h3>
+          <div id="web-pages-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            <!-- Injected dynamically -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Citation Excerpt Slideover Modal -->
+  <div id="citation-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex justify-end hidden">
+    <div class="w-full max-w-lg bg-[#0d162c] h-full border-l border-slate-800 p-6 flex flex-col justify-between shadow-2xl">
+      <div>
+        <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+          <div class="flex items-center gap-2">
+            <i data-lucide="file-check" class="w-5 h-5 text-sky-400"></i>
+            <h3 class="font-bold text-white text-base" id="modal-citation-title">Source Citation</h3>
+          </div>
+          <button onclick="closeCitationModal()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+        <div class="mt-4 space-y-3">
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-slate-400">Source: <strong class="text-slate-200" id="modal-citation-source">PDF</strong></span>
+            <span class="px-2 py-0.5 rounded bg-sky-500/10 text-sky-400 font-medium" id="modal-citation-badge">Placement Track</span>
+          </div>
+          <div class="p-4 rounded-xl bg-[#101a36] border border-slate-700/80 text-xs md:text-sm text-slate-200 leading-relaxed max-h-[60vh] overflow-y-auto whitespace-pre-wrap" id="modal-citation-text">
+            <!-- Content -->
+          </div>
+        </div>
+      </div>
+      <div class="pt-4 border-t border-slate-800">
+        <a id="modal-citation-link" href="#" target="_blank" class="w-full py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-medium text-xs flex items-center justify-center gap-2 transition">
+          <i data-lucide="external-link" class="w-4 h-4"></i>
+          <span>Open Official Web Resource</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings & LLM Config Modal -->
+  <div id="settings-modal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="w-full max-w-lg bg-[#0d162c] border border-slate-800 rounded-2xl p-6 shadow-2xl">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+        <div class="flex items-center gap-2">
+          <i data-lucide="sliders" class="w-5 h-5 text-sky-400"></i>
+          <h3 class="font-bold text-white text-base">AI Engine & Provider Settings</h3>
+        </div>
+        <button onclick="closeSettingsModal()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handleSettingsSave(event)" class="mt-5 space-y-4">
+        <!-- Preferred Provider -->
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Active AI Provider</label>
+          <select id="cfg-provider" class="w-full bg-[#101a36] border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+            <option value="local">ACC Built-in Smart Synthesizer (Instant & Offline - Free)</option>
+            <option value="gemini">Google Gemini (Gemini 2.0 Flash / 1.5 Flash)</option>
+            <option value="groq">Groq (Llama 3.3 70B - High Speed)</option>
+            <option value="openai">OpenAI (GPT-4o / GPT-4o-mini)</option>
+          </select>
+        </div>
+
+        <!-- Gemini Key -->
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Google Gemini API Key (Optional)</label>
+          <input type="password" id="cfg-gemini-key" placeholder="AIzaSy..." class="w-full bg-[#101a36] border border-slate-700 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-sky-500">
+        </div>
+
+        <!-- Groq Key -->
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Groq API Key (Optional)</label>
+          <input type="password" id="cfg-groq-key" placeholder="gsk_..." class="w-full bg-[#101a36] border border-slate-700 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-sky-500">
+        </div>
+
+        <!-- OpenAI Key -->
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">OpenAI API Key (Optional)</label>
+          <input type="password" id="cfg-openai-key" placeholder="sk-..." class="w-full bg-[#101a36] border border-slate-700 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-sky-500">
+        </div>
+
+        <div class="p-3 rounded-xl bg-sky-950/30 border border-sky-500/20 text-xs text-sky-300/80">
+          💡 The built-in ACC Smart Synthesizer operates without requiring any external keys.
+        </div>
+
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button type="button" onclick="closeSettingsModal()" class="px-4 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white">Cancel</button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs shadow-md shadow-sky-600/30 transition">Save & Apply</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
